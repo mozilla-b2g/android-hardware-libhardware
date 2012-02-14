@@ -254,8 +254,14 @@ typedef struct framebuffer_device_t {
     /* max swap interval supported by this framebuffer */
     const int       maxSwapInterval;
 
+#ifdef ENABLE_GRALLOC_NUMFB
+    /* number of framebuffers */
+    const int       numFramebuffers;
+    int reserved[7];
+#else
     int reserved[8];
-    
+#endif
+
     /* 
      * requests a specific swap-interval (same definition than EGL) 
      * 
@@ -316,8 +322,13 @@ typedef struct framebuffer_device_t {
 
     int (*compositionComplete)(struct framebuffer_device_t* dev);
 
-
+#ifdef ENABLE_GRALLOC_NUMFB
+    void* reserved_proc[3];
+    int (*dequeueBuffer) (struct framebuffer_device_t* dev, int);
+    void* reserved_proc1[4];
+#else
     void* reserved_proc[8];
+#endif
 
 } framebuffer_device_t;
 
